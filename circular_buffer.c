@@ -1,33 +1,34 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
 
-#define SIZE 12
+#define SIZE 12   
 
-typedef struct {
+struct CircularBuffer {
     char buffer[SIZE];
     int head;
     int tail;
     int count;
-} CircularBuffer;
+};
 
-void init(CircularBuffer *cb) {
+void init(struct CircularBuffer *cb) {
     cb->head = 0;
     cb->tail = 0;
     cb->count = 0;
 }
 
-bool isFull(CircularBuffer *cb) {
+bool isFull(struct CircularBuffer *cb) {
     return cb->count == SIZE;
 }
 
-bool isEmpty(CircularBuffer *cb) {
+bool isEmpty(struct CircularBuffer *cb) {
     return cb->count == 0;
 }
 
-void write(CircularBuffer *cb, char data) {
+void write(struct CircularBuffer *cb, char data) {
     if (isFull(cb)) {
-        printf("Overflow! Cannot write '%c', buffer is full.\n", data);
+        printf("Buffer Overflow\n");
         return;
     }
     cb->buffer[cb->tail] = data;
@@ -35,10 +36,10 @@ void write(CircularBuffer *cb, char data) {
     cb->count++;
 }
 
-char read(CircularBuffer *cb) {
+char read(struct CircularBuffer *cb) {
     if (isEmpty(cb)) {
-        printf("Underflow! Buffer is empty, cannot read.\n");
-        return '\0';
+        printf("Buffer Underflow\n");
+        return '\0';  
     }
     char data = cb->buffer[cb->head];
     cb->head = (cb->head + 1) % SIZE;
@@ -46,41 +47,29 @@ char read(CircularBuffer *cb) {
     return data;
 }
 
-int main() {
-    CircularBuffer cb;
+int main() {    
+
+    struct CircularBuffer cb;
     init(&cb);
 
     char name[100];
     printf("Enter your name: ");
+
     fgets(name, sizeof(name), stdin);
-    name[strcspn(name, "\n")] = '\0';
-
-    
+    name[strcspn(name, "\n")] = '\0';  
     strcat(name, "CE-ESY");
-    int length = strlen(name);
-    printf("\nText to store: \"%s\" (length = %d)\n", name, length);
-    printf("Current buffer size = %d\n\n", SIZE);
 
-    
-    printf("--- Writing ---\n");
-    for (int i = 0; i < length; i++) {
+    for (int i = 0; i < strlen(name); i++) {
         write(&cb, name[i]);
-    }
-
+    }    
     
-    printf("\n--- Reading ---\nOutput: ");
     while (!isEmpty(&cb)) {
         char ch = read(&cb);
-        if (ch != '\0') putchar(ch);
-    }
-    printf("\n");
-
-    
-    if (isEmpty(&cb)) {
-        printf("\n✓ Buffer is completely empty after reading.\n");
-    } else {
-        printf("\n✗ Error: Buffer still contains data.\n");
+        printf("%c", ch);  
     }
 
+    printf("\n"); 
+
+    system("pause");
     return 0;
 }
