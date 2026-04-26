@@ -1,5 +1,8 @@
 # Assignment 1 - Circular Buffer Implementation in C
 
+## Note
+I will explain the assignment in english, because it's suitable for GitHub.
+
 ## Project Description
 
 This program implements a **Circular Buffer** (Ring Buffer) in the C programming language, exactly following the pseudocode provided in the assignment.
