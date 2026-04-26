@@ -2,7 +2,7 @@
 #include <string.h>
 #include <stdbool.h>
 
-#define SIZE 12   // Change to 8 or 20 to test different sizes
+#define SIZE 12
 
 typedef struct {
     char buffer[SIZE];
@@ -55,19 +55,19 @@ int main() {
     fgets(name, sizeof(name), stdin);
     name[strcspn(name, "\n")] = '\0';
 
-    // Append "CE-ESY"
+    
     strcat(name, "CE-ESY");
     int length = strlen(name);
     printf("\nText to store: \"%s\" (length = %d)\n", name, length);
     printf("Current buffer size = %d\n\n", SIZE);
 
-    // Write each character
+    
     printf("--- Writing ---\n");
     for (int i = 0; i < length; i++) {
         write(&cb, name[i]);
     }
 
-    // Read and display
+    
     printf("\n--- Reading ---\nOutput: ");
     while (!isEmpty(&cb)) {
         char ch = read(&cb);
@@ -75,7 +75,7 @@ int main() {
     }
     printf("\n");
 
-    // Verify buffer is empty
+    
     if (isEmpty(&cb)) {
         printf("\n✓ Buffer is completely empty after reading.\n");
     } else {
